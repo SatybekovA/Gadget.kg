@@ -15,4 +15,4 @@ class Command(BaseCommand):
         file = open(path)
         csvreader = csv.reader(file)
         for row in csvreader:
-            Product.objects.create(name=row[0])
+            Product.objects.create(price=row[0])
