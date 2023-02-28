@@ -1,0 +1,10 @@
+<h1>{{ employee.name }}</h1>
+<p>Все заказы:</p>
+<ul>
+{% for order in orders %}
+    <li>{{ order.order }} - {{ order.amount }}</li>
+{% empty %}
+    <li>У этого сотрудника пока нет заказов.</li>
+{% endfor %}
+</ul>
+<p>Общая сумма заказов: {{ total_amount }}</p>

@@ -31,7 +31,7 @@ def customer_create(request):
         form = CustomerForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('dashboard:customers')
+            return redirect('dashboard:customer')
     context = {'form': form}
     return render(request, 'customer_create.html', context)
     
@@ -42,7 +42,7 @@ def employee_create(request):
         form = EmployeeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('dashboard:employees')
+            return redirect('dashboard:employee')
     context = {'form': form}
     return render(request, 'employee_create.html', context)
     
@@ -52,7 +52,7 @@ def order_create(request):
         form = OrderForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('dashboard:orders')
+            return redirect('dashboard:order')
     context = {'form': form}
     return render(request, 'order_create.html', context)
 
@@ -60,20 +60,20 @@ def order_create(request):
 def customer_delete(request, pk):
     customer = Customer.objects.get(id=pk)
     customer.delete()
-    return redirect('dashboard:customers')
+    return redirect('dashboard:customer')
 
 
 def employee_delete(request, pk):
     employee = Employee.objects.get(id=pk)
     employee.delete()
-    return redirect('dashboard:employees')
+    return redirect('dashboard:employee')
 
 
 
 def order_delete(request, pk):
     order = Order.objects.get(id=pk)
     order.delete()
-    return redirect('dashboard:orders')
+    return redirect('dashboard:order')
 
 
 def customer_update(request, pk):
@@ -83,7 +83,7 @@ def customer_update(request, pk):
         form = CustomerForm(request.POST, instance=customer)
         if form.is_valid():
             form.save()
-            return redirect('dashboard:customers')
+            return redirect('dashboard:customer')
     context = {'form': form}
     return render(request, 'customer_create.html', context)
 
@@ -95,7 +95,7 @@ def employee_update(request, pk):
         form = EmployeeForm(request.POST, instance=employee)
         if form.is_valid():
             form.save()
-            return redirect('dashboard:employees')
+            return redirect('dashboard:employee')
     context = {'form': form}
     return render(request, 'employee_create.html', context)
 
@@ -107,9 +107,32 @@ def order_update(request, pk):
         form = OrderForm(request.POST, instance=order)
         if form.is_valid():
             form.save()
-            return redirect('dashboard:orders')
+            return redirect('dashboard:order')
     context = {'form': form}
     return render(request, 'order_create.html', context)
 
 
 
+def customer_detail(request, pk):
+    customer = get_object_or_404(Customer, pk=pk)
+    orders = Order.objects.filter(customer=customer)
+    total_amount = orders.aggregate(Sum('amount'))['amount__sum']
+    context = {
+        'customer': customer,
+        'orders': orders,
+        'total_amount': total_amount,
+    }
+    return render(request, 'customer_detail.html', context)
+
+
+
+def employee_detail(request, pk):
+    employee = get_object_or_404(Employee, pk=pk)
+    orders = Order.objects.filter(employee=employee)
+    total_amount = orders.aggregate(Sum('amount'))['amount__sum']
+    context = {
+        'employee': employee,
+        'orders': orders,
+        'total_amount': total_amount,
+    }
+    return render(request, 'employee_detail.html', context)

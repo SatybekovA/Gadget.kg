@@ -4,21 +4,19 @@ from markets.models import Location, Product
 
 
 
-class Gender(models.Model):
-    gender =  models.CharField( max_length=50, verbose_name='Gender')
+GENDER_CHOICES = (
+    ('MAN', 'Man'),
+    ('WOMAN', 'Woman'),
+    ('BI', 'Bi'),
+    ('OTHER', 'Other')
+)
 
-    def __str__(self):
-        return self.gender
-
-    class Meta:
-        verbose_name = 'Gender'
-        verbose_name_plural = 'Gender'
 
 class Customer(models.Model):
-    name = models.CharField('Имя',max_length=50)
-    age = models.IntegerField('Возраст')
-    gender =  models.ForeignKey( Gender, on_delete=models.CASCADE )
-    location = models.ForeignKey(Location,on_delete=models.CASCADE)
+    name = models.CharField( max_length=225, null=True, blank=True, verbose_name='Customer name')
+    age = models.IntegerField()
+    gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='OTHER')
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
 
 
@@ -33,7 +31,7 @@ class Customer(models.Model):
 class Employee(models.Model):
     name = models.CharField('Имя',max_length=50)
     age = models.IntegerField('Возраст')
-    gender =  models.ForeignKey(Gender, on_delete=models.CASCADE)
+    gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='OTHER')    
     location = models.ForeignKey(Location,on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
 
@@ -47,10 +45,10 @@ class Employee(models.Model):
     
 class Order(models.Model):
     order = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='Заказ')
-    client_link = models.ForeignKey(Customer, on_delete=models.CASCADE)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     order_date = models.DateTimeField('Дата заказа', auto_now_add=True)
-    
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     def __str__(self):
         return self.order
 

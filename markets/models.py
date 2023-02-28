@@ -9,8 +9,8 @@ class Location(models.Model):
         return self.name
         
     class Meta:
-        verbose_name = 'Product'
-        verbose_name_plural = 'Products'
+        verbose_name = 'Location'
+        verbose_name_plural = 'Location'
 
 class Product(models.Model):
     name = models.CharField('Название', max_length=100)

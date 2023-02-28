@@ -1,0 +1,11 @@
+
+  <h1>{{ customer.name }}</h1>
+  <p>Все заказы:</p>
+  <ul>
+    {% for orders in orders %}
+      <li>{{ order.order }} - {{ order.amount }}</li>
+    {% empty %}
+      <li>У этого клиента пока нет заказов.</li>
+    {% endfor %}
+  </ul>
+  <p class="total">Общая сумма заказов: {{ total_amount }}</p>…
