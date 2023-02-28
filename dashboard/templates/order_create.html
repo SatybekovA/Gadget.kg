@@ -1,0 +1,14 @@
+{% block title %} форма по добовлению Product {% endblock %}
+
+{% block content %}
+   <h1 align="center"></h1align>><div class="features">
+        <h1>форма по добовлению Product </h1>
+        <form method = 'post'>
+            {% csrf_token %}
+            {{ form.as_p}} <br>
+            <span>{{ error }}</span>
+            <button class="btn btn-success" type="sumbit">Создать</button>
+
+        </form>
+    </div> </h1
+{% endblock %}

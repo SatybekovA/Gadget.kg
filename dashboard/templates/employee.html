@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+
+{% block content %}
+  <h1>Employees</h1>
+  <a href="{% url 'dashboard:employees_add' %}">Create a new customer</a>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>location</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for employees in employees %}
+      <tr>
+        <td>{{ employees.name }}</td>
+        <td>{{ employees.age }}</td>
+        <td>{{ employees.gender }}</td>
+        <td>{{ employees.location }}</td>
+        <td>{{ employees.created_date }}</td>
+        <td>
+            <a href="{% url 'dashboard:employees_update' employees.id %}">Edit</a>
+            <form method="post" action="{% url 'dashboard:employees_delete' employees.id %}">
+                {% csrf_token %}
+                <button type="submit">Delete</button>
+              </form>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No orders found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
